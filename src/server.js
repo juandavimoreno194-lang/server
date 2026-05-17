@@ -53,6 +53,17 @@ app.use(require('./routes/cambiarcontrasena.js'));
 app.use(require('./routes/consulta.js'));
 app.use(require('./routes/delete-account.js'));
 
+app.get('/debug-env', (req, res) => {
+  res.json({
+    MYSQLHOST: process.env.MYSQLHOST || '(no definido)',
+    MYSQLPORT: process.env.MYSQLPORT || '(no definido)',
+    MYSQLUSER: process.env.MYSQLUSER || '(no definido)',
+    MYSQLDATABASE: process.env.MYSQLDATABASE || '(no definido)',
+    MYSQLPASSWORD: process.env.MYSQLPASSWORD ? '(definido, oculto)' : '(no definido)',
+    NODE_ENV: process.env.NODE_ENV || '(no definido)',
+  });
+});
+
 const server = app.listen(PORT, '0.0.0.0', () => {
   console.log(`Servidor corriendo en http://0.0.0.0:${PORT}`);
 });
