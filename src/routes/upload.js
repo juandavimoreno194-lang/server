@@ -57,4 +57,29 @@ router.post('/upload-photo', upload.single('foto'), async (req, res) => {
   }
 });
 
+// 🔥 RUTA SUBIR FOTO COMO BASE64 (guarda en BD, permanente)
+router.post('/upload-photo-base64', async (req, res) => {
+  try {
+    const { userId, foto } = req.body;
+
+    if (!userId || !foto) {
+      return res.status(400).json({ message: 'Faltan userId o foto' });
+    }
+
+    if (!foto.startsWith('data:image/')) {
+      return res.status(400).json({ message: 'Formato de imagen inválido' });
+    }
+
+    await pool.query(
+      'UPDATE usuarios SET foto = ? WHERE id = ?',
+      [foto, userId]
+    );
+
+    return res.json({ message: 'Foto actualizada correctamente', foto });
+  } catch (error) {
+    console.error('ERROR SUBIDA BASE64:', error);
+    return res.status(500).json({ message: 'Error al subir foto', error: error.message });
+  }
+});
+
 module.exports = router;

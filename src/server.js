@@ -35,6 +35,17 @@ if (!fs.existsSync(uploadsDir)) {
   console.log('Directorio uploads creado.');
 }
 
+// Migrate foto column to LONGTEXT for base64 support
+(async () => {
+  try {
+    const pool = require('./db');
+    await pool.query('ALTER TABLE usuarios MODIFY COLUMN foto LONGTEXT');
+    console.log('Columna foto migrada a LONGTEXT.');
+  } catch (e) {
+    console.log('Nota: No se pudo migrar foto (quizá ya es LONGTEXT):', e.message);
+  }
+})();
+
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
