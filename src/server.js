@@ -32,17 +32,6 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.get('/debug-env', (req, res) => {
-  res.json({
-    MYSQLHOST: process.env.MYSQLHOST || '(no definido)',
-    MYSQLPORT: process.env.MYSQLPORT || '(no definido)',
-    MYSQLUSER: process.env.MYSQLUSER || '(no definido)',
-    MYSQLDATABASE: process.env.MYSQLDATABASE || '(no definido)',
-    MYSQLPASSWORD: process.env.MYSQLPASSWORD ? '(definido, oculto)' : '(no definido)',
-    NODE_ENV: process.env.NODE_ENV || '(no definido)',
-  });
-});
-
 app.use(require('./routes/actividad.js'));
 app.use(require('./routes/estadisticas.js'));
 app.use(require('./routes/consejo.js'));
